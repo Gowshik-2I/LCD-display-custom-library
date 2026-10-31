@@ -2,7 +2,7 @@
 /*
 TODO:
  setCursor(col, row) for all 4 rows
- clear() and home()
+ clear() and home() -- done
  display() / noDisplay()
  cursor() / noCursor()
  blink() / noBlink()
@@ -24,6 +24,17 @@ void pininit()
     pinMode(data[i],OUTPUT);
     digitalWrite(data[i],LOW);
   }
+}
+void home()
+{
+  lcdWrite(0b00000010,false);
+  delay(5);
+}
+
+void clear()
+{
+  lcdWrite(0b00000001,false);
+  delayMicroseconds(150);
 }
 void lcdinit()
 {
@@ -56,13 +67,13 @@ void lcdinit()
   lcdWrite(0b00001000,false); // display off
   delayMicroseconds(100);
 
-  lcdWrite(0b00000001,false); // didsplay clear
+  lcdWrite(0b00000001,false); // display clear
   delay(2);
 
   lcdWrite(0b00000110,false); // entrymode : incre by 1
   delayMicroseconds(100);
 
-  lcdWrite(0b00001100,false); //display on
+  lcdWrite(0b00001101,false); //display on
   delayMicroseconds(100);
 }
 
@@ -144,26 +155,28 @@ void writedata(const char datatoprint[])
 void setup() 
 {
   lcdinit();
-  //const char message[] = " vaada mapula vala pazhaa thopula...vaada mapula vala pazhaa thopula";
- // writedata(message);
-/*
-loadTamilchar();
-  int a = ' ';
- lcdWrite(a,true);
- for(int i = 5 ; i < 8 ; i++)
- {
-  lcdWrite(i,true);
-  delay(500);
- }
- lcdWrite(a,true);
+  const char message[] = "TEST MESSAGE TESTING.... TESTING....";
+  writedata(message);
 
- lcdWrite(a,true);
- for(int i = 0 ; i < 3 ; i++)
- {
-  lcdWrite(i,true);
-  delay(500);
- }
-*/
+//  loadTamilchar();
+//   int a = ' ';
+//  lcdWrite(a,true);
+//  for(int i = 5 ; i < 8 ; i++)
+//  {
+//   lcdWrite(i,true);
+//   delay(500);
+//  }
+//  lcdWrite(a,true);
+
+//  lcdWrite(a,true);
+//  for(int i = 0 ; i < 3 ; i++)
+//  {
+//   lcdWrite(i,true);
+delay(5000);
+//  }
+home();
+delay(5000);
+clear();
 
 }
 
