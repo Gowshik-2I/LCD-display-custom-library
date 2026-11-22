@@ -3,9 +3,9 @@
 TODO:
  setCursor(col, row) for all 4 rows
  clear() and home() -- done
- display() / noDisplay()
- cursor() / noCursor()
- blink() / noBlink()
+ display() / noDisplay() -- done
+ cursor() / noCursor() -- done
+ blink() / noBlink() -- done
  createChar(slot, rows) (move the Tamil data out of the driver into a sketch)
  */
 
@@ -34,7 +34,26 @@ void home()
 void clear()
 {
   lcdWrite(0b00000001,false);
-  delayMicroseconds(150);
+  delay(2);
+}
+
+void displaySettings(bool D,bool C, bool B)
+{
+  uint8_t temp = 0b00001000;
+  if(D)
+  {
+    temp = temp | 0b00000100;
+  }
+  if(C)
+  {
+    temp = temp | 0b00000010;
+  }
+  if(B)
+  {
+    temp = temp | 0b00000001;
+  }
+  lcdWrite(temp,false);
+  delayMicroseconds(50);
 }
 void lcdinit()
 {
@@ -61,7 +80,7 @@ void lcdinit()
   lcdWrite(0b00110000,false);
   delayMicroseconds(150);
 
-  lcdWrite(0b00111000,false);
+  lcdWrite(0b00110000,false);
   delayMicroseconds(100);
 
   lcdWrite(0b00001000,false); // display off
@@ -77,7 +96,7 @@ void lcdinit()
   delayMicroseconds(100);
 }
 
-void loadTamilchar()
+void createChar()
 {
   // Custom 8 char using glyph code
   // fill ur required glyph code for custom char
@@ -85,11 +104,19 @@ const uint8_t glyph[8][8] = {
   {0x0f, 0x0a, 0x1f, 0x13, 0x1f, 0x03, 0x04, 0x08},  
   {0x07, 0x04, 0x17, 0x15, 0x15, 0x1f, 0x00, 0x00},  
   {0x04, 0x17, 0x15, 0x15, 0x1f, 0x04, 0x12, 0x0c},  
-  {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 
+  {0x00,
+  0x1B,
+  0x15,
+  0x11,
+  0x11,
+  0x0A,
+  0x04,
+  0x00},
   {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 
   {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
   {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
   {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
+  
    
 };
 
@@ -152,32 +179,32 @@ void writedata(const char datatoprint[])
   }
 
 }
+void scrollit(char S[])
+{
+  const int n = strlen(S);
+  for(int i = 0 ; i<=n ; i++)
+  {
+    writedata(S+i);
+    delay(500);
+    clear();
+    home();
+  }
+  for(int i = 0 ; i<=16 ; i++)
+  {
+    writedata(" ");
+  }
+
+}
+
 void setup() 
 {
+  
   lcdinit();
-  const char message[] = "TEST MESSAGE TESTING.... TESTING....";
+  createChar();
+  displaySettings(true,false,false);
+  const char message[] = "                This is Gowshik\x03";
   writedata(message);
-
-//  loadTamilchar();
-//   int a = ' ';
-//  lcdWrite(a,true);
-//  for(int i = 5 ; i < 8 ; i++)
-//  {
-//   lcdWrite(i,true);
-//   delay(500);
-//  }
-//  lcdWrite(a,true);
-
-//  lcdWrite(a,true);
-//  for(int i = 0 ; i < 3 ; i++)
-//  {
-//   lcdWrite(i,true);
-delay(5000);
-//  }
-home();
-delay(5000);
-clear();
-
+  
 }
 
 void loop() 
