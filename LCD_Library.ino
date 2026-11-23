@@ -31,13 +31,17 @@ void home()
   delay(5);
 }
 
+void setCursorto(int row, int col)
+{
+  
+}
 void clear()
 {
   lcdWrite(0b00000001,false);
   delay(2);
 }
 
-void displaySettings(bool D,bool C, bool B)
+void displaySettings(bool D,bool C, bool B) // (display on/off, cursor on/off, blinking on/off)
 {
   uint8_t temp = 0b00001000;
   if(D)
@@ -179,22 +183,22 @@ void writedata(const char datatoprint[])
   }
 
 }
-void scrollit(char S[])
-{
-  const int n = strlen(S);
-  for(int i = 0 ; i<=n ; i++)
-  {
-    writedata(S+i);
-    delay(500);
-    clear();
-    home();
-  }
-  for(int i = 0 ; i<=16 ; i++)
-  {
-    writedata(" ");
-  }
+// void scrollit(char S[])
+// {
+//   const int n = strlen(S);
+//   for(int i = 0 ; i<=n ; i++)
+//   {
+//     writedata(S+i);
+//     delay(500);
+//     clear();
+//     home();
+//   }
+//   for(int i = 0 ; i<=16 ; i++)
+//   {
+//     writedata(" ");
+//   }
 
-}
+// }
 
 void setup() 
 {
